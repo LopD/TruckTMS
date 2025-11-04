@@ -3,6 +3,8 @@ import asyncio
 import httpx
 import json
 from urllib.parse import parse_qs
+from dotenv import load_dotenv
+import os
 
 ## channels 
 ## https://channels.readthedocs.io/en/latest/
@@ -14,7 +16,7 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 from .permissions import VehicleTrackingPermission
 
-
+load_dotenv()  # this will load .env automatically
 
 class VehicleTrackingConsumer(AsyncWebsocketConsumer):
 
@@ -127,7 +129,7 @@ class VehicleTrackingConsumer(AsyncWebsocketConsumer):
     async def get_vehicle_location(self, vehicle_id):
         url = f"https://api.gomotive.com/v1/vehicle_locations?vehicle_ids={vehicle_id}"
         headers = {
-            "x-api-key": "30d634dc-d64b-478d-b576-9a4229d587c2",
+            "x-api-key": os.getenv("X_API_KEY"),
             "accept": "application/json",
         }
         async with httpx.AsyncClient() as client:
